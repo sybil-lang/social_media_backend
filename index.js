@@ -10,20 +10,31 @@ const postRoute = require("./routes/posts");
 
 dotenv.config();
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to MongoDB");
-  } catch (error) {
-    console.error("Failed to connect to MongoDB", error);
-    process.exit(1);
-  }
-};
+// const connectDB = async () => {
+//   try {
+//     await mongoose.connect("mongodb+srv://charuprabha228:6LoUGtIosjdr1Z1r@cluster0.lpkicec.mongodb.net/socialmedia_builder?retryWrites=true&w=majority&appName=Cluster0", {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+//     console.log("Connected to MongoDB");
+//   } catch (error) {
+//     console.error("Failed to connect to MongoDB", error);
+//     process.exit(1);
+//   }
+// };
 
-connectDB();
+// connectDB();
+const connectDB = async (req, res) => {
+  try {
+      await mongoose.connect(process.env.MONGO_URL).then(() => {
+          console.log("Connected")
+      })
+  } catch (error) {
+      res.status(400).json({ message: "Not Connected" });
+  }
+}
+
+connectDB()
 
 //middleware
 app.use(express.json());

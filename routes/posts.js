@@ -71,20 +71,29 @@ router.get("/:id", async (req, res) => {
 });
 
 //get timeline posts
-
+// This endpoint fetches all posts for a given user, including their own posts and the posts from users they follow.
 router.get("/timeline/all", async (req, res) => {
   try {
+    // Fetch the current user from the User collection using the userId from the request body
     const currentUser = await User.findById(req.body.userId);
+
+    // Fetch the posts created by the current user
     const userPosts = await Post.find({ userId: currentUser._id });
+
+    // Fetch the posts created by the users followed by the current user
     const friendPosts = await Promise.all(
       currentUser.followings.map((friendId) => {
         return Post.find({ userId: friendId });
       })
     );
-    res.json(userPosts.concat(...friendPosts))
+
+    // Combine the current user's posts and the followed users' posts into a single array
+    res.json(userPosts.concat(...friendPosts));
   } catch (err) {
+    // Handle any errors that occur during the process
     res.status(500).json(err);
   }
 });
+
 
 module.exports = router;
