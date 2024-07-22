@@ -13,6 +13,16 @@ router.post("/", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+// Get all posts
+router.get("/", async (req, res) => {
+  try {
+    const posts = await Post.find();
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 //update a post
 
 router.put("/:id", async (req, res) => {
