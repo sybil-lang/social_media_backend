@@ -82,10 +82,10 @@ router.get("/:id", async (req, res) => {
 
 //get timeline posts
 // This endpoint fetches all posts for a given user, including their own posts and the posts from users they follow.
-router.get("/timeline/all", async (req, res) => {
+router.get("/timeline/:userId", async (req, res) => {
   try {
     // Fetch the current user from the User collection using the userId from the request body
-    const currentUser = await User.findById(req.body.userId);
+    const currentUser = await User.findById(req.params.userId);
 
     // Fetch the posts created by the current user
     const userPosts = await Post.find({ userId: currentUser._id });
